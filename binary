@@ -1,0 +1,100 @@
+//binary.y
+%{
+
+void yyerror (char *s);
+int yylex();
+#include<stdio.h>
+#include<stdlib.h>
+#include<ctype.h>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%}
+%union {int num }
+%start N
+%token <num> ZERO ONE
+%type <num> N L B
+/* Rule Section */
+%%
+N: L {printf("\n%d", $$);}
+ ;
+L: L B {$$=$1*2+$2;}
+| B {$$=$1;}
+;
+B:ZERO {$$=$1;}
+|ONE {$$=$1;};
+;
+%%
+
+//driver code
+int main()
+{
+ while(yyparse());
+}
+
+yyerror(char *s)
+{
+ fprintf(stdout, "\n%s", s);
+}
+
+
+//binary.l
+%{
+
+#include "y.tab.h"
+void yyerror(char *s);
+int yylex();
+
+%}
+
+%%
+[0]      {yylval.num = atoi(yytext) ; return ZERO;}
+[1]      {yylval.num = atoi(yytext) ; return ONE;}
+
+[ \t]    ;
+[\n]    return 0;
+.       {ECHO; yyerror("unexpected char");}
+%%
+
+int yywrap(void) { return 1;}
+
+
+
+
+
+
+
+
+
+
+
