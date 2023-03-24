@@ -1,0 +1,102 @@
+//brackets.y
+%{
+
+void yyerror (char *s);
+int yylex();
+#include<stdio.h>
+#include<stdlib.h>
+#include<ctype.h>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%}
+%union {char id }
+%start S
+%type <id> S
+/* Rule Section */
+%%
+S : '(' S ')'   ;
+  | S S         ;
+  | %empty      ;
+  ;
+%%
+
+//driver code
+int main()
+{
+ while(yyparse());
+ printf("true");
+}
+
+yyerror(char *s)
+{
+ printf("false");
+ exit(EXIT_SUCCESS);
+ fprintf(stdout, "\n%s", s);
+}
+
+
+
+//brackets.l
+
+%{
+
+#include "y.tab.h"
+void yyerror(char *s);
+int yylex();
+
+%}
+
+%%
+[(]      {yylval.id = yytext[1] ; return '(';}
+[)]      {yylval.id = yytext[0] ; return ')';}
+
+[ \t]    ;
+[\n]    return 0;
+.       {ECHO; yyerror("unexpected char");}
+%%
+
+int yywrap(void) { return 1;}
+
+
+
+
+
+
+
+
+
+
+
+
+
